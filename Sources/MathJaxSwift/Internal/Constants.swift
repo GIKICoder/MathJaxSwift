@@ -87,7 +87,13 @@ internal struct Constants {
   struct URLs {
     
     /// The URL of the mjn top-level directory.
-    static let mjn = Bundle.module.url(forResource: Names.Modules.mjn, withExtension: nil)
+    static let mjn: URL? = {
+      #if SWIFT_PACKAGE
+      return Bundle.module.url(forResource: Names.Modules.mjn, withExtension: nil)
+      #else
+      return Bundle(for: MathJax.self).url(forResource: Names.Modules.mjn, withExtension: nil)
+      #endif
+    }()
     
     /// The URL of the chtml bundle file.
     static let chtmlBundle = mjn?.appendingPathComponent(Paths.chtmlBundleFile)
